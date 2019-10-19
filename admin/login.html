@@ -43,6 +43,7 @@
       $('.input_sub').click(function(e) {
         // 阻止体检按钮的默认行为
         e.preventDefault()
+          // trim清除输入框左右俩边的空格
         var username = $(".input_txt").val().trim();
         var password = $('.input_pass').val().trim();
         // 飞控判断
@@ -58,11 +59,12 @@
             username: username,
             password: password
           },
-          success: function(backDate) {
-            if (backDate.code === 400) {
-              alert(backDate.msg);
-            } else if (backDate.code === 200) {
+          success: function(backData) {
+            if (backData.code === 400) {
+              alert(backData.msg);
+            } else if (backData.code === 200) {
               window.location.href = './index.html';
+              window.localStorage.setItem('token', backData.token);
             }
           }
         })

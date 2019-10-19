@@ -55,14 +55,43 @@
     </div>
   </div>
   <script>
+    // $(function() {
+    //   //   给文章管理事件
+    //   $('.level01:eq(1)').click(function() {
+    //       $(this).next().slideToggle();
+    //     })
+    //     // 高亮显示
+    //   $('.level01').click(function() {
+    //     $(this).addClass('active').siblings().removeClass('active');
+    //   })
+
+    //   // 登录信息对应
+    //   $.ajax({
+    //     url: "http://localhost:8080/api/v1/admin/user/info",
+    //   })
+    // })
+
     $(function() {
-      //   给文章管理事件
+      // 文章下啦列表
       $('.level01:eq(1)').click(function() {
           $(this).next().slideToggle();
         })
         // 高亮显示
       $('.level01').click(function() {
-        $(this).addClass('active').siblings().removeClass('active');
+          $(this).addClass('active').siblings().removeClass('active');
+        })
+        // 登录对应信息
+      $.ajax({
+        url: "http://localhost:8080/api/v1/admin/user/info",
+        headers: {
+          Authorization: window.localStorage.getItem('token')
+        },
+        success: function(backData) {
+          $('.user_info > img').attr('src', backData.data.userPic);
+          $('.user_info > span').text('欢迎  ' + backData.data.nickname);
+          $('.user_center_link > img').attr('src', backData.data.userPic);
+
+        }
       })
     })
   </script>
