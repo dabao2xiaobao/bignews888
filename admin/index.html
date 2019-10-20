@@ -74,7 +74,7 @@
     $(function() {
       // 文章下啦列表
       $('.level01:eq(1)').click(function() {
-          $(this).next().slideToggle();
+          $(this).next('.level02').slideToggle();
         })
         // 高亮显示
       $('.level01').click(function() {
@@ -83,9 +83,9 @@
         // 登录对应信息
       $.ajax({
         url: "http://localhost:8080/api/v1/admin/user/info",
-        headers: {
-          Authorization: window.localStorage.getItem('token')
-        },
+        // headers: {
+        //   Authorization: window.localStorage.getItem('token')
+        // },
         // 成功
         success: function(backData) {
           $('.user_info > img').attr('src', backData.data.userPic);
@@ -93,12 +93,12 @@
           $('.user_center_link > img').attr('src', backData.data.userPic);
         },
         // 失败
-        error: function(backData) {
-          if (backData.statusText === 'Forbidden') {
-            alert('您已经触犯法律')
-            window.location.href = './login.html'
-          }
-        }
+        // error: function(backData) {
+        // if (backData.statusText === 'Forbidden') {
+        //   alert('您已经触犯法律')
+        //   window.location.href = './login.html'
+        // }
+        // }
       })
     })
   </script>
