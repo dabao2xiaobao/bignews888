@@ -72,17 +72,41 @@
     // <!-- 用户详情获取 -->
     $(function() {
       $.ajax({
-        url: BigNew.user_detail,
-        success: function(backData) {
-          console.log(backData);
-          // 标签元素的标记,数据有相同部分
-          for (const key in backData.backData) {
-            $("." + key).val(backData.data[key]);
+          url: BigNew.user_detail,
+          success: function(backData) {
+            console.log(backData);
+            // 标签元素的标记,数据有相同部分
+            for (const key in backData.data) {
+              $("." + key).val(backData.data[key]);
+            }
+            $(".user_pic").attr("src", backData.data.userPic);
           }
-          $(".user_pic").attr("src", backData.data.userPic);
-        }
-      })
 
+        })
+        // 个人数据修改
+      $(".btn-edit").click(function(e) {
+        //   阻止默认行为
+        e.preventDefault();
+        var data = new FormData($('form')[0]);
+        //   调用接口
+        $.ajax({
+          url: BigNew.user_edit,
+          type: "post",
+          data: data,
+          //   不设置默认类型
+          contentType: false,
+          //   不处理数据
+          processData: false,
+          success: function(backData) {
+            console.log(backData);
+            // 如果更新成功
+            if (backData.code === 200) {
+              // 刷新父页面
+              window.parent.location.reload()
+            }
+          }
+        })
+      })
     })
   </script>
 </body>
