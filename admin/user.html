@@ -85,27 +85,38 @@
         })
         // 个人数据修改
       $(".btn-edit").click(function(e) {
-        //   阻止默认行为
-        e.preventDefault();
-        var data = new FormData($('form')[0]);
-        //   调用接口
-        $.ajax({
-          url: BigNew.user_edit,
-          type: "post",
-          data: data,
-          //   不设置默认类型
-          contentType: false,
-          //   不处理数据
-          processData: false,
-          success: function(backData) {
-            console.log(backData);
-            // 如果更新成功
-            if (backData.code === 200) {
-              // 刷新父页面
-              window.parent.location.reload()
+          //   阻止默认行为
+          e.preventDefault();
+          var data = new FormData($('form')[0]);
+          //   调用接口
+          $.ajax({
+            url: BigNew.user_edit,
+            type: "post",
+            data: data,
+            //   不设置默认类型
+            contentType: false,
+            //   不处理数据
+            processData: false,
+            success: function(backData) {
+              console.log(backData);
+              // 如果更新成功
+              if (backData.code === 200) {
+                // 刷新父页面
+                window.parent.location.reload()
+              }
             }
-          }
+          })
         })
+        //   本地图片预览
+      $("#exampleInputFile").change(function() {
+        // 生成url
+        var url = URL.createObjectURL(this.files[0]);
+        // 设置给img的src
+        // prev 获取前一个兄弟节点
+        // $(this).prev('img').attr('src',url);
+        // 兄弟节点中的`img`标签
+        $(this).siblings('img').attr('src', url);
+
       })
     })
   </script>
