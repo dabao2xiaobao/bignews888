@@ -95,7 +95,8 @@
       <td class="text-center">{{ $value.date }}</td>
       <td class="text-center">{{ $value.state }}</td>
       <td class="text-center" data-id="{{$value.id}}">
-        <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
+        <!-- 也可以绑定点击事件 -->
+        <a href="article_edit.html?id={{$value.id}}" class="btn btn-default btn-xs">编辑</a>
         <a href="javascript:void(0);" class="btn btn-danger btn-xs delete">删除</a>
       </td>
     </tr>
@@ -103,6 +104,10 @@
   </script>
   <script>
     $(function() {
+
+      // 每一页的数据条数 抽取为变量 方便后续的修改
+      var myPerpage = 10;
+
       // 一.调用接口获取文章分类数据
       $.ajax({
         url: BigNew.category_list,
@@ -120,7 +125,7 @@
         url: BigNew.article_query,
         data: {
           // 每一页要多少条数据
-          perpage: 10
+          perpage: myPerpage
         },
         success: function(backData) {
           console.log(backData);
@@ -140,6 +145,11 @@
             onPageClick: function(event, page) {
               // 获取页码
               console.log(page);
+              // 分页依旧需要保留筛选的状态
+              // 获取类型id
+              var type = $("#selCategory").val();
+              // 获取状态
+              var state = $("#selStatus").val();
               // 获取这一页对应的数据
               $.ajax({
                 url: BigNew.article_query,
@@ -147,7 +157,10 @@
                   // 页码
                   page: page,
                   // 页容量
-                  perpage: 10
+                  perpage: myPerpage,
+                  // 筛选的条件
+                  type: type,
+                  state: state
                 },
                 success: function(backData) {
                   // 模板引擎
@@ -176,15 +189,23 @@
           url: BigNew.article_query,
           data: {
             type: type,
-            state: state
+            state: state,
+            // perpage 不给 默认是6
+            // success中计算出来的总页数 每一页是 6条
+            perpage: myPerpage
           },
           success: function(backData) {
-            // console.log(backData);
+            console.log(backData);
             // 调用模板引擎的方法
             var res = template('articleTem', backData);
             // 渲染到tbody中
             $('.article-tbody').html(res);
             // console.log(res);
+            // 重新设置总页数
+            // changeTotalPages 固定的写法 调用插件内部的一个方法
+            // 参数1 新的总页数 backData.data.totalPage
+            // 参数2 当前页  1
+            $('#pagination-demo').twbsPagination('changeTotalPages', backData.data.totalPage, 1);
           }
         })
       })
