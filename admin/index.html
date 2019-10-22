@@ -59,56 +59,57 @@
   </div>
   <script>
     $(function() {
-      // 二级菜单的展开收齐
-      $(".level01:eq(1)").click(function() {
-        // 隔壁的level02展开或者收起
-        $(this).next('.level02').slideToggle();
+        // 二级菜单的展开收齐
+        $(".level01:eq(1)").click(function() {
+          // 隔壁的level02展开或者收起
+          $(this).next('.level02').slideToggle();
+        })
+
+        // 点击高亮效果
+        $('.level01').click(function() {
+          $(this).addClass('active').siblings().removeClass('active');
+        })
+
+        // 获取用户信息
+        $.ajax({
+          // url:"http://localhost:8080/api/v1/admin/user/info",
+          // 使用抽取的接口属性
+          url: BigNew.user_info,
+          // headers:{
+          //     Authorization:window.localStorage.getItem("token")
+          // },
+          success: function(backData) {
+            // console.log(backData);
+            // 设置左侧的头像和名字
+            $(".user_info>img").attr('src', backData.data.userPic);
+            $(".user_info>span").text('欢迎  ' + backData.data.nickname);
+            // 右侧顶部的头像
+            $(".user_center_link>img").attr('src', backData.data.userPic);
+          },
+          // 请求失败之后的回调函数
+          // error:function(backData){
+          //     console.log('我错啦!');
+          //     console.log(backData);
+          //     if(backData.statusText==='Forbidden'){
+          //         alert("滚犊子!");
+          //         window.location.href='./login.html';
+          //     }
+          // }
+        })
+
+        // 登出
+        $(".logout").click(function() {
+          if (window.confirm("你真的要离开我了吗,哭唧唧!o(╥﹏╥)o")) {
+            // 请出缓存
+            window.localStorage.removeItem("token");
+            // 去登录页
+            window.location.href = "./login.html";
+          }
+
+
+        })
       })
-
-      // 点击高亮效果
-      $('.level01').click(function() {
-        $(this).addClass('active').siblings().removeClass('active');
-      })
-
-      // 获取用户信息
-      $.ajax({
-        // url:"http://localhost:8080/api/v1/admin/user/info",
-        // 使用抽取的接口属性
-        url: BigNew.user_info,
-        // headers:{
-        //     Authorization:window.localStorage.getItem("token")
-        // },
-        success: function(backData) {
-          // console.log(backData);
-          // 设置左侧的头像和名字
-          $(".user_info>img").attr('src', backData.data.userPic);
-          $(".user_info>span").text('欢迎  ' + backData.data.nickname);
-          // 右侧顶部的头像
-          $(".user_center_link>img").attr('src', backData.data.userPic);
-        },
-        // 请求失败之后的回调函数
-        // error:function(backData){
-        //     console.log('我错啦!');
-        //     console.log(backData);
-        //     if(backData.statusText==='Forbidden'){
-        //         alert("滚犊子!");
-        //         window.location.href='./login.html';
-        //     }
-        // }
-      })
-
-      // 登出
-      $(".logout").click(function() {
-        if (window.confirm("你真的要离开我了吗,哭唧唧!o(╥﹏╥)o")) {
-          // 请出缓存
-          window.localStorage.removeItem("token");
-          // 去登录页
-          window.location.href = "./login.html";
-        }
-
-
-      })
-    })
+      // 比
   </script>
 </body>
 
