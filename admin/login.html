@@ -62,6 +62,9 @@
           },
           success: function(backData) {
             if (backData.code === 400) {
+              // console.log(backData);
+              // console.log(backData.code);
+              // console.log(backData.msg);
               alert(backData.msg);
             } else if (backData.code === 200) {
               window.location.href = './index.html';
